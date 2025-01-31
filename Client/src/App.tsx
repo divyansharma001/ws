@@ -4,26 +4,28 @@ import './App.css'
 
 function App() {
 
-  const [socket, setWebsocket] = useState();
+  const [socket, setWebsocket] = useState(); //created this state to store the websocket connection and use it
 
   const inputRef = useRef();
 
   const handleSendMessage = () =>{
     if(!socket) return;
 
-    // const message = inputRef.current.value;
-
-    // socket.send(message);
+    const message = inputRef.current.value;
 
     //@ts-ignore
-    socket.send("ping");
+    socket.send(message);
+  
   }
 
   useEffect(()=>{
-    const ws = new WebSocket('ws://localhost:8080')
+    const ws = new WebSocket('ws://localhost:8080') //create a new websocket connection
     setWebsocket(ws)
     ws.onmessage = (message) => {
       console.log('Message received:', message.data)
+    }
+    ws.onerror = (error) => {
+      console.log('Error:', error)
     }
    }, [])
 
